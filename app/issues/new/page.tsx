@@ -5,6 +5,8 @@ import "easymde/dist/easymde.min.css";
 import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { newIssueSchema } from "@/app/newIssueSchema";
 
 interface Issue {
   title: string;
@@ -12,7 +14,9 @@ interface Issue {
 }
 
 const newIssue = () => {
-  const { register, control, handleSubmit } = useForm<Issue>();
+  const { register, control, handleSubmit, formState: {errors} } = useForm<Issue>({
+    resolver: zodResolver(newIssueSchema),
+  });
   const router = useRouter();
   const [error, setError] = useState("");
   return (
@@ -45,6 +49,7 @@ const newIssue = () => {
         <TextField.Root>
           <TextField.Input placeholder="Type here" {...register("title")} />
         </TextField.Root>
+        {errors.title && <TextArea>{errors.title.message}</TextArea>}
         <Controller
           name="description"
           control={control}
@@ -52,6 +57,7 @@ const newIssue = () => {
             <SimpleMDE placeholder="description" {...field}></SimpleMDE>
           )}
         />
+        {errors.description && <TextArea color="red">{errors.description.message}</TextArea>}
 
         <Button>Submit</Button>
       </form>
