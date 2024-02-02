@@ -8,7 +8,7 @@ import delay from "delay";
 
 const page = async () => {
   const issues = await prisma.issue.findMany();
- //await delay(10000);
+  //await delay(10000);
 
   return (
     <div>
@@ -25,7 +25,9 @@ const page = async () => {
         </Table.Row>
         {issues.map((issue) => (
           <Table.Row key={issue.id}>
-            <Table.Cell>{issue.title}</Table.Cell>
+            <Link href={`/issues/${issue.id}`}>
+              <Table.Cell>{issue.title}</Table.Cell>
+            </Link>
             <Table.Cell className="hidden: md:table-cell">
               <IssueBadge status={issue.status} />
             </Table.Cell>
