@@ -7,6 +7,7 @@ import { Controller, useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { newIssueSchema } from "@/app/newIssueSchema";
+import Spinner from "@/app/components/Spinner";
 
 interface Issue {
   title: string;
@@ -14,11 +15,17 @@ interface Issue {
 }
 
 const newIssue = () => {
-  const { register, control, handleSubmit, formState: {errors} } = useForm<Issue>({
+  const {
+    register,
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<Issue>({
     resolver: zodResolver(newIssueSchema),
   });
   const router = useRouter();
   const [error, setError] = useState("");
+  const [spin, setSpin] = useState(false);
   return (
     <div>
       {error && (
@@ -30,6 +37,7 @@ const newIssue = () => {
         className="max-w-xl space-y-4"
         onSubmit={handleSubmit((data) => {
           try {
+            setSpin(true);
             fetch("/api/issues", {
               method: "POST",
               body: JSON.stringify(data),
@@ -40,6 +48,7 @@ const newIssue = () => {
               router.push("/issues");
             });
           } catch (errors) {
+            setSpin(false);
             setError(
               "An error occured please ensure all fields are filled out."
             );
@@ -57,9 +66,11 @@ const newIssue = () => {
             <SimpleMDE placeholder="description" {...field}></SimpleMDE>
           )}
         />
-        {errors.description && <TextArea color="red">{errors.description.message}</TextArea>}
+        {errors.description && (
+          <TextArea color="red">{errors.description.message}</TextArea>
+        )}
 
-        <Button>Submit</Button>
+        <Button disabled={spin}>Submit{spin && <Spinner />}</Button>
       </form>
     </div>
   );
