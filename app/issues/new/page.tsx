@@ -50,7 +50,7 @@ const newIssue = () => {
           } catch (errors) {
             setSpin(false);
             setError(
-              "An error occured please ensure all fields are filled out."
+              "An error occured please ensure all fields are filled out idiot."
             );
           }
         })}
