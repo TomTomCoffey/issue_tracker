@@ -1,6 +1,6 @@
 "use client";
 import { Button, Callout, TextArea, TextField } from "@radix-ui/themes";
-import SimpleMDE from "react-simplemde-editor";
+//import SimpleMDE from "react-simplemde-editor";
 import "easymde/dist/easymde.min.css";
 import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -9,7 +9,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { newIssueSchema } from "@/app/newIssueSchema";
 import Spinner from "@/app/components/Spinner";
 import delay from "delay";
+import dynamic from "next/dynamic";
 
+const SimpleMDE = dynamic(() => import("react-simplemde-editor"), {
+  ssr: false,
+});
 interface Issue {
   title: string;
   description: string;
