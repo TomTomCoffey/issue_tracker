@@ -8,7 +8,7 @@ import delay from "delay";
 
 const page = async () => {
   const issues = await prisma.issue.findMany();
-  await delay(3000);
+  //await delay(3000);
 
   return (
     <div>

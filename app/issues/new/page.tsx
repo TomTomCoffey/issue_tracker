@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { newIssueSchema } from "@/app/newIssueSchema";
 import Spinner from "@/app/components/Spinner";
+import delay from "delay";
 
 interface Issue {
   title: string;
@@ -26,6 +27,7 @@ const newIssue = () => {
   const router = useRouter();
   const [error, setError] = useState("");
   const [spin, setSpin] = useState(false);
+  delay(3000);
   return (
     <div>
       {error && (
