@@ -1,5 +1,5 @@
 "use client";
-import { Button, Callout, TextArea, TextField } from "@radix-ui/themes";
+import { Button, Callout, Flex, RadioGroup, TextArea, TextField, Text } from "@radix-ui/themes";
 //import SimpleMDE from "react-simplemde-editor";
 import "easymde/dist/easymde.min.css";
 import React, { cache, useState } from "react";
@@ -33,6 +33,7 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
   const router = useRouter();
   const [error, setError] = useState("");
   const [spin, setSpin] = useState(false);
+  
   delay(3000);
 
   return (
@@ -97,6 +98,26 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
         {errors.description && (
           <TextArea color="red">{errors.description.message}</TextArea>
         )}
+
+        {issue && (<RadioGroup.Root defaultValue="1">
+  <Flex gap="2" direction="column">
+    <Text as="label" size="2">
+      <Flex gap="2">
+        <RadioGroup.Item value="1" /> Open
+      </Flex>
+    </Text>
+    <Text as="label" size="2">
+      <Flex gap="2">
+        <RadioGroup.Item value="2" /> In Progress
+      </Flex>
+    </Text>
+    <Text as="label" size="2">
+      <Flex gap="2">
+        <RadioGroup.Item value="3" /> Closed
+      </Flex>
+    </Text>
+  </Flex>
+</RadioGroup.Root>)}
 
         <Button disabled={spin}>
           {issue ? "Update Issue" : "Create Issue"}
