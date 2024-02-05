@@ -16,6 +16,7 @@ const SimpleMDE = dynamic(() => import("react-simplemde-editor"), {
 });
 
 interface Issue {
+  id: number;
   title: string;
   description: string;
 }
@@ -44,6 +45,18 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
       <form
         className="max-w-xl space-y-4"
         onSubmit={handleSubmit((data) => {
+          if (issue) {
+            fetch(`/api/issues/${issue.id}`, {
+              method: "PATCH",
+              body: JSON.stringify(data),
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }).then(() => {
+              router.push("/issues");
+            });
+          }
+
           try {
             setSpin(true);
             fetch("/api/issues", {
@@ -83,7 +96,10 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
           <TextArea color="red">{errors.description.message}</TextArea>
         )}
 
-        <Button disabled={spin}>Submit{spin && <Spinner />}</Button>
+        <Button disabled={spin}>
+          {issue ? "Update Issue" : "Create Issue"}
+          {spin && <Spinner />}
+        </Button>
       </form>
     </div>
   );
