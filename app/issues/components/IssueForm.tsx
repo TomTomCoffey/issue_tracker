@@ -2,7 +2,7 @@
 import { Button, Callout, TextArea, TextField } from "@radix-ui/themes";
 //import SimpleMDE from "react-simplemde-editor";
 import "easymde/dist/easymde.min.css";
-import React, { useState } from "react";
+import React, { cache, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -54,6 +54,7 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
               },
             }).then(() => {
               router.push("/issues");
+              router.refresh();
             });
           }
 
@@ -67,6 +68,7 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
               },
             }).then(() => {
               router.push("/issues");
+              router.refresh();
             });
           } catch (errors) {
             setSpin(false);
