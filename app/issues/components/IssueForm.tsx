@@ -65,25 +65,25 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
               router.push("/issues");
               router.refresh();
             });
-          }
-
-          try {
-            setSpin(true);
-            fetch("/api/issues", {
-              method: "POST",
-              body: JSON.stringify(data),
-              headers: {
-                "Content-Type": "application/json",
-              },
-            }).then(() => {
-              router.push("/issues");
-              router.refresh();
-            });
-          } catch (errors) {
-            setSpin(false);
-            setError(
-              "An error occured please ensure all fields are filled out idiot."
-            );
+          } else {
+            try {
+              setSpin(true);
+              fetch("/api/issues", {
+                method: "POST",
+                body: JSON.stringify(data),
+                headers: {
+                  "Content-Type": "application/json",
+                },
+              }).then(() => {
+                router.push("/issues");
+                router.refresh();
+              });
+            } catch (errors) {
+              setSpin(false);
+              setError(
+                "An error occured please ensure all fields are filled out idiot."
+              );
+            }
           }
         })}
       >
