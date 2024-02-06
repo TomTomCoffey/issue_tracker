@@ -1,15 +1,20 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { AlertDialog, Button, Flex } from "@radix-ui/themes";
 import { useRouter } from "next/navigation";
+import Spinner from "@/app/components/Spinner";
 
 const DeleteIssueButton = ({ issueId }: { issueId: number }) => {
   const router = useRouter();
+  const [spin, setSpin] = useState(false);
   return (
     <>
       <AlertDialog.Root>
         <AlertDialog.Trigger>
-          <Button color="red">Delete Issue</Button>
+          <Button color="red" disabled={spin}>
+            {spin && <Spinner />}
+            Delete Issue
+          </Button>
         </AlertDialog.Trigger>
         <AlertDialog.Content style={{ maxWidth: 450 }}>
           <AlertDialog.Title>Delete Issue</AlertDialog.Title>
@@ -28,6 +33,7 @@ const DeleteIssueButton = ({ issueId }: { issueId: number }) => {
                 variant="solid"
                 color="red"
                 onClick={async () => {
+                  setSpin(true);
                   fetch(`/api/issues/${issueId}`, {
                     method: "DELETE",
                   }).then(() => {
