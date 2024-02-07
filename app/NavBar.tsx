@@ -4,8 +4,11 @@ import React from "react";
 import { FaHotdog } from "react-icons/fa";
 import { usePathname } from "next/navigation";
 import classNames from "classnames";
+import { Box, Button } from "@radix-ui/themes";
+import { useSession } from "next-auth/react";
 
 const NavBar = () => {
+  const { status, data: session } = useSession();
   const links = [
     { href: "/", label: "Dashboard" },
     { href: "/issues", label: "Issues" },
@@ -37,6 +40,27 @@ const NavBar = () => {
           </li>
         ))}
       </ul>
+      <Box>
+        {status === "loading" && (
+          <div>
+            <span className="loading loading-dots loading-xs"></span>
+            <span className="loading loading-dots loading-xs"></span>
+            <span className="loading loading-dots loading-xs"></span>
+            <span className="loading loading-dots loading-xs"></span>
+          </div>
+        )}
+        {status === "unauthenticated" && (
+          <Link href="/api/auth/signin" className="mr-5">
+            Login
+          </Link>
+        )}
+        {status === "authenticated" &&  session?.user?.name}
+        {status === "authenticated" && (
+          <Link href="/api/auth/signout" className="mr-5 ml-5">
+            Sign out
+          </Link>
+        )}
+      </Box>
     </nav>
   );
 };
