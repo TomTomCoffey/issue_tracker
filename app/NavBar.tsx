@@ -4,7 +4,7 @@ import React from "react";
 import { FaHotdog } from "react-icons/fa";
 import { usePathname } from "next/navigation";
 import classNames from "classnames";
-import { Box, Button, Flex } from "@radix-ui/themes";
+import { Avatar, Box, Button, DropdownMenu, Flex } from "@radix-ui/themes";
 import { useSession } from "next-auth/react";
 import Spinner from "./components/Spinner";
 
@@ -18,9 +18,9 @@ const NavBar = () => {
   const pathname = usePathname();
 
   return (
-    <nav className="border-b h-16 mb-5 px-6 py-5">
+    <nav className="border-b h-16 px-6 py-3">
       <Flex justify="between">
-        <Flex align="center" gap="4">
+        <Flex align="center" gap="5">
           <Link href="/">
             {" "}
             <FaHotdog />
@@ -57,11 +57,26 @@ const NavBar = () => {
                 Login
               </Link>
             )}
-            {status === "authenticated" && session?.user?.name}
             {status === "authenticated" && (
-              <Link href="/api/auth/signout" className="mr-5 ml-5">
-                Sign out
-              </Link>
+              <>
+                <DropdownMenu.Root>
+                  <DropdownMenu.Trigger>
+                    <Avatar
+                      src={session!.user?.image!}
+                      fallback="?"
+                      className="cursor-pointer hover:ease-in-out"
+                    />
+                  </DropdownMenu.Trigger>
+                  <DropdownMenu.Content>
+                    <DropdownMenu.Label>
+                      Hello, {session!.user?.name}
+                    </DropdownMenu.Label>
+                    <DropdownMenu.Item>
+                      <Link href="/api/auth/signout">Sign out</Link>
+                    </DropdownMenu.Item>
+                  </DropdownMenu.Content>
+                </DropdownMenu.Root>
+              </>
             )}
           </Box>
         </Flex>
