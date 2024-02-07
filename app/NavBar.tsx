@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import classNames from "classnames";
 import { Box, Button } from "@radix-ui/themes";
 import { useSession } from "next-auth/react";
+import Spinner from "./components/Spinner";
 
 const NavBar = () => {
   const { status, data: session } = useSession();
@@ -43,10 +44,7 @@ const NavBar = () => {
       <Box>
         {status === "loading" && (
           <div>
-            <span className="loading loading-dots loading-xs"></span>
-            <span className="loading loading-dots loading-xs"></span>
-            <span className="loading loading-dots loading-xs"></span>
-            <span className="loading loading-dots loading-xs"></span>
+            <Spinner  />
           </div>
         )}
         {status === "unauthenticated" && (
