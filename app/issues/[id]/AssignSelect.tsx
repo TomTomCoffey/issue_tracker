@@ -1,10 +1,10 @@
 "use client";
-import { User } from "@prisma/client";
+import { Issue, User } from "@prisma/client";
 import { Select } from "@radix-ui/themes";
 import { useQuery } from "@tanstack/react-query";
 import React, { useEffect, useState } from "react";
 
-const AssignSelect = () => {
+const AssignSelect = ({issue}: {issue: Issue}) => {
   const [users, setUsers] = useState<User[]>([]);
 
   useEffect(() => {
@@ -18,7 +18,16 @@ const AssignSelect = () => {
 
   return (
     <>
-      <Select.Root>
+      <Select.Root onValueChange={(userId)=>{
+        fetch(`/api/issues/${issue.id}`, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({assignedToUserId: userId}),
+        });
+
+      }}>
         <Select.Trigger placeholder="Assign"></Select.Trigger>
         <Select.Content>
           <Select.Group>
