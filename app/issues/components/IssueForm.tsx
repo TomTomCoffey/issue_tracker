@@ -108,21 +108,21 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
         )}
 
         {issue && (
-          <RadioGroup.Root defaultValue="1">
+          <RadioGroup.Root defaultValue="1" {...register}>
             <Flex gap="2" direction="column">
               <Text as="label" size="2">
                 <Flex gap="2">
-                  <RadioGroup.Item value="1" /> Open
+                  <RadioGroup.Item value="OPEN"{...register}  /> Open
                 </Flex>
               </Text>
               <Text as="label" size="2">
                 <Flex gap="2">
-                  <RadioGroup.Item value="2" /> In Progress
+                  <RadioGroup.Item value="IN_PROGRESS"{...register} /> In Progress
                 </Flex>
               </Text>
-              <Text as="label" size="2">
+              <Text as="label" size="2" {...register}>
                 <Flex gap="2">
-                  <RadioGroup.Item value="3" /> Closed
+                  <RadioGroup.Item value="DONE"{...register} /> Closed
                 </Flex>
               </Text>
             </Flex>

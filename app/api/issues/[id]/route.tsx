@@ -1,12 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/prisma/client";
-import { newIssueSchema} from "../../../newIssueSchema";
+import { newIssueSchema } from "../../../newIssueSchema";
 
 export async function PATCH(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
   const body = await request.json();
+
+  console.log(body);
 
   const validation = newIssueSchema.safeParse(body);
 
@@ -17,23 +19,26 @@ export async function PATCH(
     );
   }
 
-  if(body.assignedToUserId){
+  if (body.assignedToUserId) {
     const user = await prisma.user.findUnique({
       where: {
-        id: (body.assignedToUserId),
+        id: body.assignedToUserId,
       },
     });
     if (!user) {
       return NextResponse.json({ error: "Invalid User" }, { status: 400 });
-  }
-  }
-
-  if(body.status){
-    if(body.status !== "OPEN" && body.status !== "IN_PROGRESS" && body.status !== "DONE"){
-      return NextResponse.json({ error: "Invalid Status" }, { status: 400 });
     }
   }
 
+  if (body.status) {
+    if (
+      body.status !== "OPEN" &&
+      body.status !== "IN_PROGRESS" &&
+      body.status !== "DONE"
+    ) {
+      return NextResponse.json({ error: "Invalid Status" }, { status: 400 });
+    }
+  }
 
   await prisma.issue.update({
     where: { id: parseInt(params.id) },
