@@ -4,7 +4,7 @@ import { Select } from "@radix-ui/themes";
 import { useQuery } from "@tanstack/react-query";
 import React, { useEffect, useState } from "react";
 
-const AssignSelect = ({issue}: {issue: Issue}) => {
+const AssignSelect = ({ issue }: { issue: Issue }) => {
   const [users, setUsers] = useState<User[]>([]);
 
   useEffect(() => {
@@ -18,20 +18,25 @@ const AssignSelect = ({issue}: {issue: Issue}) => {
 
   return (
     <>
-      <Select.Root onValueChange={(userId)=>{
-        fetch(`/api/issues/${issue.id}`, {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({assignedToUserId: userId}),
-        });
-
-      }}>
+      <Select.Root
+        defaultValue={issue.assignedToUserId || ""}
+        onValueChange={(userId) => {
+          fetch(`/api/issues/${issue.id}`, {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              assignedToUserId: userId || null,
+            }),
+          });
+        }}
+      >
         <Select.Trigger placeholder="Assign"></Select.Trigger>
         <Select.Content>
           <Select.Group>
             <Select.Label>Suggestions</Select.Label>
+            {/* <Select.Item value="">Unassigned</Select.Item> */}
             {users.map((user) => (
               <Select.Item key={user.id} value={user.id}>
                 {user.name}
