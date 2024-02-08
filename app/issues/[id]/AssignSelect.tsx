@@ -3,6 +3,8 @@ import { Issue, User } from "@prisma/client";
 import { Select } from "@radix-ui/themes";
 import { useQuery } from "@tanstack/react-query";
 import React, { useEffect, useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
+import { useToaster } from "react-hot-toast";
 
 const AssignSelect = ({ issue }: { issue: Issue }) => {
   const [users, setUsers] = useState<User[]>([]);
@@ -18,6 +20,7 @@ const AssignSelect = ({ issue }: { issue: Issue }) => {
 
   return (
     <>
+      <Toaster />
       <Select.Root
         defaultValue={issue.assignedToUserId || ""}
         onValueChange={(userId) => {
@@ -29,7 +32,13 @@ const AssignSelect = ({ issue }: { issue: Issue }) => {
             body: JSON.stringify({
               assignedToUserId: userId || null,
             }),
-          });
+          }).then(() => {
+            console.log("Assigned");
+            toast.success("Issue assigned");
+          }).catch(() => {
+            toast.error("Failed to assign issue");
+          }
+          );
         }}
       >
         <Select.Trigger placeholder="Assign"></Select.Trigger>
