@@ -36,7 +36,7 @@ const AssignSelect = ({ issue }: { issue: Issue }) => {
         <Select.Content>
           <Select.Group>
             <Select.Label>Suggestions</Select.Label>
-            {/* <Select.Item value="">Unassigned</Select.Item> */}
+            {/* <Select.Item value="">Unassigned</Select.Item>  will get back to this for unassigning users*/}
             {users.map((user) => (
               <Select.Item key={user.id} value={user.id}>
                 {user.name}
