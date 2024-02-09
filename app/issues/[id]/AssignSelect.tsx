@@ -32,13 +32,14 @@ const AssignSelect = ({ issue }: { issue: Issue }) => {
             body: JSON.stringify({
               assignedToUserId: userId || null,
             }),
-          }).then(() => {
-            console.log("Assigned");
-            toast.success("Issue assigned");
-          }).catch(() => {
-            toast.error("Failed to assign issue");
-          }
-          );
+          })
+            .then(() => {
+              console.log("Assigned");
+              toast.success("Issue assigned");
+            })
+            .catch(() => {
+              toast.error("Failed to assign issue");
+            });
         }}
       >
         <Select.Trigger placeholder="Assign"></Select.Trigger>
