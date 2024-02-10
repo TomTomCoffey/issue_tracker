@@ -6,14 +6,13 @@ import IssueBadge from "../components/IssueBadge";
 import NewIssueButton from "../components/NewIssueButton";
 import delay from "delay";
 import { Issue, Status } from "@prisma/client";
+import Pagination from "../components/Pagination";
 
 interface Props {
-  searchParams: { status: Status; orderBy: keyof Issue };
+  searchParams: { status: Status; orderBy: keyof Issue; page: string };
 }
 
 const page = async ({ searchParams }: Props) => {
- 
-
   const colums: { label: string; value: keyof Issue; className?: string }[] = [
     { label: "Issue", value: "title" },
     { label: "Status", value: "status", className: "hidden: md:table-cell" },
@@ -29,11 +28,23 @@ const page = async ({ searchParams }: Props) => {
   const orderby = searchParams.orderBy
     ? { [searchParams.orderBy]: "asc" }
     : undefined;
+
+  const page = parseInt(searchParams.page) || 1;
+  const pageSize = 10;
+
   const issues = await prisma.issue.findMany({
     where: {
       status: searchParams.status,
     },
     orderBy: orderby,
+    skip: (page - 1) * pageSize,
+    take: pageSize,
+  });
+
+  const issuesCount = await prisma.issue.count({
+    where: {
+      status: searchParams.status,
+    },
   });
 
   //await delay(3000);
@@ -55,7 +66,6 @@ const page = async ({ searchParams }: Props) => {
                     orderBy: column.value,
                   },
                 }}
-              
               >
                 {column.label}
               </Link>
@@ -79,6 +89,11 @@ const page = async ({ searchParams }: Props) => {
           </Table.Row>
         ))}
       </Table.Root>
+      <Pagination
+        itemCount={issuesCount}
+        pageSize={pageSize}
+        currentPage={page}
+      />
     </div>
   );
 };
