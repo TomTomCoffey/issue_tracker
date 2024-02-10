@@ -11,7 +11,7 @@ import {
 //import SimpleMDE from "react-simplemde-editor";
 import "easymde/dist/easymde.min.css";
 import React, { cache, useState } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, set, useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { newIssueSchema } from "@/app/newIssueSchema";
@@ -42,6 +42,7 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
   const router = useRouter();
   const [error, setError] = useState("");
   const [spin, setSpin] = useState(false);
+  const [status, setStatus] = useState(issue?.status);
   delay(3000);
 
   return (
@@ -55,6 +56,7 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
         className="max-w-xl space-y-4"
         onSubmit={handleSubmit((data) => {
           if (issue) {
+            setSpin(true);
             fetch(`/api/issues/${issue.id}`, {
               method: "PATCH",
               body: JSON.stringify(data),
@@ -62,8 +64,10 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
                 "Content-Type": "application/json",
               },
             }).then(() => {
+              setSpin(false);
               router.push("/issues");
               router.refresh();
+
             });
           } else {
             try {
@@ -108,11 +112,23 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
         )}
 
         {issue && (
-          <RadioGroup.Root defaultValue="1" {...register}>
+          <RadioGroup.Root onValueChange={ async (status)=>{
+            fetch(`/api/issues/${issue.id}`, {
+              method: "PATCH",
+              body: JSON.stringify({status: status}),
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }).then(() => {
+             // router.push("/issues");
+              //router.refresh();
+            });
+          
+          }}>
             <Flex gap="2" direction="column">
               <Text as="label" size="2">
                 <Flex gap="2">
-                  <RadioGroup.Item value="OPEN"{...register}  /> Open
+                  <RadioGroup.Item value="OPEN"  /> Open
                 </Flex>
               </Text>
               <Text as="label" size="2">

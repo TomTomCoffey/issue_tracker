@@ -1,23 +1,41 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, Table } from "@radix-ui/themes";
 import Link from "next/link";
 import prisma from "@/prisma/client";
 import IssueBadge from "../components/IssueBadge";
 import NewIssueButton from "../components/NewIssueButton";
 import delay from "delay";
-import { Status } from "@prisma/client";
+import { Issue, Status } from "@prisma/client";
 
-const page = async ({ searchParams }: { searchParams: { status: Status } }) => {
+interface Props {
+  searchParams: { status: Status; orderBy: keyof Issue };
+}
+
+const page = async ({ searchParams }: Props) => {
+ 
+
+  const colums: { label: string; value: keyof Issue; className?: string }[] = [
+    { label: "Issue", value: "title" },
+    { label: "Status", value: "status", className: "hidden: md:table-cell" },
+    {
+      label: "Created",
+      value: "createdAt",
+      className: "hidden: md:table-cell",
+    },
+  ];
+
   const stauses = Object.values(Status);
+
+  const orderby = searchParams.orderBy
+    ? { [searchParams.orderBy]: "asc" }
+    : undefined;
   const issues = await prisma.issue.findMany({
     where: {
       status: searchParams.status,
     },
-    orderBy: {
-      createdAt: "desc",
-    },
-  }
-  );
+    orderBy: orderby,
+  });
+
   //await delay(3000);
 
   return (
@@ -25,13 +43,24 @@ const page = async ({ searchParams }: { searchParams: { status: Status } }) => {
       <NewIssueButton />
       <Table.Root variant="surface">
         <Table.Row>
-          <Table.ColumnHeaderCell>Title</Table.ColumnHeaderCell>
-          <Table.ColumnHeaderCell className="hidden: md:table-cell">
-            Status
-          </Table.ColumnHeaderCell>
-          <Table.ColumnHeaderCell className="hidden: md:table-cell">
-            Created
-          </Table.ColumnHeaderCell>
+          {colums.map((column) => (
+            <Table.ColumnHeaderCell
+              key={column.value}
+              className={column.className}
+            >
+              <Link
+                href={{
+                  query: {
+                    ...searchParams,
+                    orderBy: column.value,
+                  },
+                }}
+              
+              >
+                {column.label}
+              </Link>
+            </Table.ColumnHeaderCell>
+          ))}
         </Table.Row>
         {issues.map((issue) => (
           <Table.Row key={issue.id}>
