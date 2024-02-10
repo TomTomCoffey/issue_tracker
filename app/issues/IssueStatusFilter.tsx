@@ -24,23 +24,24 @@ const status: { label: string; value?: Status }[] = [
 const IssueStatusFilter = () => {
   const router = useRouter();
 
-  const searchParams = useSearchParams();
+  const search = useSearchParams();
 
   return (
     <Select.Root
       onValueChange={(status) => {
         const params = new URLSearchParams();
-        if (status) params.append("status", status);
-        if (searchParams.get("orderBy")) {
-          params.append("orderBy", searchParams.get("orderBy")!);
+        console.log(params.toString());
+        if (status) {
+          params.append("status", status);
         }
-        const query = params.size ? "?" + params.toString() : "";
+        const order = search.get("orderBy");
 
         if (status === "ALL") {
-          router.push(`/issues${query}`);
+          router.push("/issues");
           return;
         }
-        router.push("/issues" + query);
+        const query = status ? `?status=${status}&orderBy=${order}` : "";
+        router.push(`/issues${query}`);
       }}
     >
       <Select.Trigger placeholder="Filter by status" />
