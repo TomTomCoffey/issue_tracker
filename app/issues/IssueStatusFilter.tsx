@@ -34,14 +34,29 @@ const IssueStatusFilter = () => {
         if (status) {
           params.append("status", status);
         }
-        const order = search.get("orderBy");
 
+        const order = search.get("orderBy");
+        if (order) {
+          console.log('order is '+ order);
+          params.append("orderBy", order);
+  
+        }
         if (status === "ALL") {
           router.push("/issues");
           return;
         }
-        const query = status ? `?status=${status}&orderBy=${order}` : "";
-        router.push(`/issues${query}`);
+        // console.log(params.toString());
+        // console.log("about this is the params to string");
+        const query = status ? `?status=${status}` : "";
+
+        if (order !== null) {
+          query.concat(`&orderBy=${order}`);
+        }
+
+        // console.log(params.toString());
+        console.log(query);
+        router.push(`/issues/?${params.toString()}`);
+        //router.push(`/issues${query}`);
       }}
     >
       <Select.Trigger placeholder="Filter by status" />
