@@ -2,6 +2,7 @@
 import { Issue, User } from "@prisma/client";
 import { Select } from "@radix-ui/themes";
 import { useQuery } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { useToaster } from "react-hot-toast";
@@ -17,6 +18,8 @@ const AssignSelect = ({ issue }: { issue: Issue }) => {
     };
     getThemUsers();
   }, []);
+
+  const router = useRouter();
 
   return (
     <>
@@ -36,6 +39,7 @@ const AssignSelect = ({ issue }: { issue: Issue }) => {
             .then(() => {
               console.log("Assigned");
               toast.success("Issue assigned");
+              router.refresh();
             })
             .catch(() => {
               toast.error("Failed to assign issue");
