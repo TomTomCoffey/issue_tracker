@@ -7,6 +7,8 @@ import NewIssueButton from "../components/NewIssueButton";
 import delay from "delay";
 import { Issue, Status } from "@prisma/client";
 import Pagination from "../components/Pagination";
+import SearchIssue from "./[id]/SearchIssue";
+import { Metadata } from "next";
 
 interface Props {
   searchParams: { status: Status; orderBy: keyof Issue; page: string };
@@ -52,6 +54,7 @@ const page = async ({ searchParams }: Props) => {
   return (
     <div>
       <NewIssueButton />
+      <SearchIssue />
       <Table.Root variant="surface">
         <Table.Row>
           {colums.map((column) => (
@@ -99,5 +102,10 @@ const page = async ({ searchParams }: Props) => {
 };
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: "Issues",
+  description: "Search through all issues.",
+};
 
 export default page;

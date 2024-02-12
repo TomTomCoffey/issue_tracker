@@ -128,17 +128,17 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
             <Flex gap="2" direction="column">
               <Text as="label" size="2">
                 <Flex gap="2">
-                  <RadioGroup.Item value="OPEN"  /> Open
+                  <RadioGroup.Item value="OPEN" /> Open
                 </Flex>
               </Text>
               <Text as="label" size="2">
                 <Flex gap="2">
-                  <RadioGroup.Item value="IN_PROGRESS"{...register} /> In Progress
+                  <RadioGroup.Item value="IN_PROGRESS"/> In Progress
                 </Flex>
               </Text>
               <Text as="label" size="2" {...register}>
                 <Flex gap="2">
-                  <RadioGroup.Item value="DONE"{...register} /> Closed
+                  <RadioGroup.Item value="DONE" /> Closed
                 </Flex>
               </Text>
             </Flex>

@@ -12,17 +12,17 @@ interface Props {
 const IssueSummary = ({ open, inProgress, closed }: Props) => {
   const stats: { label: string; value: number; status: Status }[] = [
     {
-      label: "Open",
+      label: "Open Issues",
       value: open,
       status: Status.OPEN,
     },
     {
-      label: "In Progress",
+      label: "In Progress Issues",
       value: inProgress,
       status: Status.IN_PROGRESS,
     },
     {
-      label: "Closed",
+      label: "Closed Issues",
       value: closed,
       status: Status.DONE,
     },
@@ -30,11 +30,16 @@ const IssueSummary = ({ open, inProgress, closed }: Props) => {
 
   return (
     <div>
-      <Flex gap="3">
+      <Flex gap="3" justify="center">
         {stats.map((stat) => (
-          <Card key={stat.label} color="blue">
+          <Card key={stat.label} color="blue" className="hover:ease-in">
             <Flex direction="column" gap="1" align="center">
-              <Link href={`/issues?status=${stat.status}`} className="font-meduim">{stat.label}</Link>
+              <Link
+                href={`/issues?status=${stat.status}`}
+                className="font-meduim hover:text-blue"
+              >
+                {stat.label}
+              </Link>
               <div className="font-bold">{stat.value}</div>
             </Flex>
           </Card>
