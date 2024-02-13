@@ -5,6 +5,7 @@ import { Button, Flex, Box, TextField } from "@radix-ui/themes";
 
 interface CloudinaryResult {
   public_id: string;
+  thumbnail_url: string;
 }
 
 const SignUpPage = () => {
@@ -79,8 +80,11 @@ const SignUpPage = () => {
                   return;
                 }
                 const info = result.info as CloudinaryResult;
-                setPublicId(info.public_id);
-                
+                console.log(info);
+              
+                setPublicId(info.thumbnail_url);
+
+
               }}
             >
               {({ open }) => (
