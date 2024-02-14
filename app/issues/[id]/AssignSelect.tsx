@@ -64,3 +64,5 @@ const AssignSelect = ({ issue }: { issue: Issue }) => {
 };
 
 export default AssignSelect;
+
+export const dynamic = "force-dynamic";
