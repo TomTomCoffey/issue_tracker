@@ -55,7 +55,7 @@ const NavBar = () => {
             {status === "unauthenticated" && (
               <DropdownMenu.Root>
                 <DropdownMenu.Trigger>
-                  <Button>Sign in</Button>
+                  <Button color="purple">Sign in</Button>
                 </DropdownMenu.Trigger>
                 <DropdownMenu.Content>
                   <DropdownMenu.Item>
