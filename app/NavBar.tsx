@@ -7,7 +7,6 @@ import classNames from "classnames";
 import { Avatar, Box, Button, DropdownMenu, Flex } from "@radix-ui/themes";
 import { useSession } from "next-auth/react";
 import Spinner from "./components/Spinner";
-import { CldUploadWidget, CldImage } from "next-cloudinary";
 
 const NavBar = () => {
   const { status, data: session } = useSession();
@@ -54,9 +53,19 @@ const NavBar = () => {
               </div>
             )}
             {status === "unauthenticated" && (
-              <Link href="/api/auth/signin" className="mr-5">
-                Login
-              </Link>
+              <DropdownMenu.Root>
+                <DropdownMenu.Trigger>
+                  <Button>Sign in</Button>
+                </DropdownMenu.Trigger>
+                <DropdownMenu.Content>
+                  <DropdownMenu.Item>
+                    <Link href="/signup">Sign up</Link>
+                  </DropdownMenu.Item>
+                  <DropdownMenu.Item>
+                    <Link href="/api/auth/signin"> Login</Link>
+                  </DropdownMenu.Item>
+                </DropdownMenu.Content>
+              </DropdownMenu.Root>
             )}
             {status === "authenticated" && (
               <>
@@ -73,7 +82,7 @@ const NavBar = () => {
                     />
                   </DropdownMenu.Trigger>
                   <DropdownMenu.Content>
-                    <DropdownMenu.Label> 
+                    <DropdownMenu.Label>
                       Hello, {session!.user?.name}
                     </DropdownMenu.Label>
                     <DropdownMenu.Item>

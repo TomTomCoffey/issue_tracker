@@ -2,6 +2,8 @@
 import React, { useState } from "react";
 import { CldUploadWidget, CldImage } from "next-cloudinary";
 import { Button, Flex, Box, TextField } from "@radix-ui/themes";
+import toast, { Toaster } from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 interface CloudinaryResult {
   public_id: string;
@@ -13,6 +15,7 @@ const SignUpPage = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const router = useRouter();
 
   function handleSignUp() {
     fetch("/api/users/register", {
@@ -21,12 +24,20 @@ const SignUpPage = () => {
       headers: {
         "Content-Type": "application/json",
       },
-    });
+    })
+    .then(() => {
+        toast.success("Congrats! You have signed up routing to login page");
+        setTimeout(() => {
+            router.push("/api/auth/signin");
+          
+        }, 1500);
+        
+    })
   }
 
   return (
     <div className="column max-w-85">
-      <Box>
+      <Box className="p-5">
         <h1 className="mb-5 justify-center">Sign Up</h1>
 
         <Flex direction="column" gap="5">
@@ -98,6 +109,7 @@ const SignUpPage = () => {
           <Button onClick={handleSignUp}>Sign Up</Button>
         </Flex>
       </Box>
+        <Toaster />
     </div>
   );
 };
