@@ -54,9 +54,13 @@ const NavBar = () => {
             )}
             {status === "unauthenticated" && (
               <DropdownMenu.Root>
+                <Button>
                 <DropdownMenu.Trigger>
-                  <Button color="purple">Sign in</Button>
+                  <div className=" btn cursor-pointer hover:ease-in-out">
+                    <Button>Sign in</Button>
+                  </div>
                 </DropdownMenu.Trigger>
+                </Button>
                 <DropdownMenu.Content>
                   <DropdownMenu.Item>
                     <Link href="/signup">Sign up</Link>
