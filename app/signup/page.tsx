@@ -24,21 +24,18 @@ const SignUpPage = () => {
       headers: {
         "Content-Type": "application/json",
       },
-    })
-    .then(() => {
-        toast.success("Congrats! You have signed up routing to login page");
-        setTimeout(() => {
-            router.push("/api/auth/signin");
-          
-        }, 1500);
-        
-    })
+    }).then(() => {
+      toast.success("Congrats! You have signed up routing to login page");
+      setTimeout(() => {
+        router.push("/api/auth/signin");
+      }, 1500);
+    });
   }
 
   return (
-    <div className="column max-w-85">
-      <Box className="p-5">
-        <h1 className="mb-5 justify-center">Sign Up</h1>
+    <div className="column max-w-85 border-stone-700 ">
+      <Box className="p-5 m-50">
+        <h1 className="mb-10 mt-5 justify-center border-l-slate-800">Sign Up</h1>
 
         <Flex direction="column" gap="5">
           <TextField.Root>
@@ -92,10 +89,8 @@ const SignUpPage = () => {
                 }
                 const info = result.info as CloudinaryResult;
                 console.log(info);
-              
+
                 setPublicId(info.thumbnail_url);
-
-
               }}
             >
               {({ open }) => (
@@ -109,7 +104,7 @@ const SignUpPage = () => {
           <Button onClick={handleSignUp}>Sign Up</Button>
         </Flex>
       </Box>
-        <Toaster />
+      <Toaster />
     </div>
   );
 };

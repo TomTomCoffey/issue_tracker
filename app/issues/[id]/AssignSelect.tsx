@@ -1,11 +1,10 @@
 "use client";
 import { Issue, User } from "@prisma/client";
 import { Select } from "@radix-ui/themes";
-import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
-import { useToaster } from "react-hot-toast";
+
 
 const AssignSelect = ({ issue }: { issue: Issue }) => {
   const [users, setUsers] = useState<User[]>([]);
@@ -17,7 +16,7 @@ const AssignSelect = ({ issue }: { issue: Issue }) => {
       setUsers(data);
     };
     getThemUsers();
-  }, []);
+  }, );
 
   const router = useRouter();
 
