@@ -8,17 +8,23 @@ import toast, { Toaster } from "react-hot-toast";
 
 const AssignSelect = ({ issue }: { issue: Issue }) => {
   const [users, setUsers] = useState<User[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const getThemUsers = async () => {
       const res = await fetch("/api/users");
       const data: User[] = await res.json();
       setUsers(data);
+      setLoading(false);
     };
     getThemUsers();
-  }, );
+    const intervalId = setInterval(getThemUsers, 15000); 
 
+    return () => clearInterval(intervalId); 
+  }, []); 
   const router = useRouter();
+
+  
 
   return (
     <>
